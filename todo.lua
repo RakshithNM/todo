@@ -52,10 +52,23 @@ local function addTask()
 	print("Task added.")
 end
 
+-- Colorize
+local function colorize(text, colorCode)
+	return string.format("\27[%sm%s\27[0m", colorCode, text)
+end
+
+local function printTask(i, task)
+	local color = "31" -- red
+	if task:find("%[x%]") then
+		color = "32"
+	end
+	print(colorize(i .. ". " .. task, color))
+end
+
 -- List tasks
 local function listTasks()
 	for i, task in ipairs(tasks) do
-		print(i .. ". " .. task)
+		printTask(i, task)
 	end
 end
 
@@ -90,7 +103,7 @@ local function listRemainingTasks()
 	print("\nRemaining Tasks:")
 	for i, task in ipairs(tasks) do
 		if task:find("%[ %]") then
-			print(i .. ". " .. task)
+			printTask(i, task)
 		end
 	end
 end
@@ -100,7 +113,7 @@ local function listCompletedTasks()
 	print("\nCompleted Tasks:")
 	for i, task in ipairs(tasks) do
 		if task:find("%[x%]") then
-			print(i .. ". " .. task)
+			printTask(i, task)
 		end
 	end
 end
