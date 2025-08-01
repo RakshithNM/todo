@@ -118,15 +118,34 @@ local function listCompletedTasks()
 	end
 end
 
+-- Edit tasks
+local function editTask()
+	listTasks()
+	io.write("Enter task number to edit: ")
+	local index = tonumber(io.read())
+	if index and tasks[index] then
+		io.write("Current task: " .. tasks[index] .. "\n")
+		io.write("Enter new task description: ")
+		local newText = io.read()
+		local isDone = tasks[index]:find("%[x%]")
+		tasks[index] = (isDone and "[x] " or "[ ] ") .. newText
+		saveTasks()
+		print("Task updated.")
+	else
+		print("Invalid task number.")
+	end
+end
+
 local function showMenu()
 	print("\n==== To-Do List ====")
 	print("1. Add Task")
 	print("2. List Tasks")
 	print("3. Mark Task as Done")
-	print("4. Delete Task")
-	print("5. Exit")
+	print("4. Edit Task")
+	print("5. Delete Task")
 	print("6. Show Remaining Tasks")
 	print("7. Show Completed Tasks")
+	print("8. Exit")
 	print("====================")
 end
 
@@ -143,14 +162,16 @@ while true do
 	elseif choice == "3" then
 		markDone()
 	elseif choice == "4" then
-		deleteTask()
+		editTask()
 	elseif choice == "5" then
-		saveTasks()
-		break
+		deleteTask()
 	elseif choice == "6" then
 		listRemainingTasks()
 	elseif choice == "7" then
 		listCompletedTasks()
+	elseif choice == "8" then
+		saveTasks()
+		break
 	else
 		print("Invalid choice.")
 	end
